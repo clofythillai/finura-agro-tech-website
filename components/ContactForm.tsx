@@ -7,7 +7,7 @@ import { useLang } from "@/context/LangContext";
 // You can use Formspree, Web3Forms, or Getform.
 // Just create a free form endpoint at https://formspree.io/ or https://web3forms.com/
 // and paste your endpoint URL or access key below:
-const FORM_SUBMIT_URL = "https://formspree.io/f/xyzyqojw"; // Replace with your Formspree Form ID/URL
+const FORM_SUBMIT_URL = "https://formspree.io/f/xeeykaog"; // Replace with your Formspree Form ID/URL
 
 export default function ContactForm() {
   const { lang } = useLang();
