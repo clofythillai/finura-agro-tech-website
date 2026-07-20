@@ -51,11 +51,15 @@ export default function ContactForm() {
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         formRef.current!,
-        EMAILJS_PUBLIC_KEY
+        { publicKey: EMAILJS_PUBLIC_KEY }
       );
       setSubmitted(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("EmailJS sending error details:", error);
+      if (error && typeof error === "object") {
+        console.error("Status:", error.status);
+        console.error("Text:", error.text);
+      }
       setErrors({
         submit: isTa
           ? "மின்னஞ்சலை அனுப்ப முடியவில்லை. முகவரி அல்லது இணைய இணைப்பைச் சரிபார்க்கவும், அல்லது எங்களை அழைக்கவும்: 9445450305"
