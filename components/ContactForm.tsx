@@ -1,18 +1,17 @@
 "use client";
 
-import { useState, useRef } from "react";
-import emailjs from "@emailjs/browser";
+import { useState } from "react";
 import { useLang } from "@/context/LangContext";
 
-// ── EmailJS config ────────────────────────────────────────
-const EMAILJS_SERVICE_ID: string = "service_it8fapp";
-const EMAILJS_TEMPLATE_ID: string = "template_ix2j8kb";
-const EMAILJS_PUBLIC_KEY: string = "nA4IopOURtglmKt2_";
+// ── Contact Form Endpoint Config ──────────────────────────
+// You can use Formspree, Web3Forms, or Getform.
+// Just create a free form endpoint at https://formspree.io/ or https://web3forms.com/
+// and paste your endpoint URL or access key below:
+const FORM_SUBMIT_URL = "https://formspree.io/f/xyzyqojw"; // Replace with your Formspree Form ID/URL
 
 export default function ContactForm() {
   const { lang } = useLang();
   const isTa = lang === "ta";
-  const formRef = useRef<HTMLFormElement>(null);
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -35,35 +34,31 @@ export default function ContactForm() {
     setErrors({});
     setLoading(true);
 
-    if (EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY" || EMAILJS_PUBLIC_KEY.trim() === "") {
-      console.error("EmailJS Error: Public Key is not configured. Please edit components/ContactForm.tsx and set EMAILJS_PUBLIC_KEY to your actual EmailJS Public Key.");
-      setErrors({
-        submit: isTa
-          ? "மின்னஞ்சல் கட்டமைப்பு நிறைவடையவில்லை. தயவுசெய்து contact/ContactForm.tsx இல் Public Key ஐ உள்ளிடவும், அல்லது எங்களை நேரடியாக அழைக்கவும்: 9445450305"
-          : "Contact Form configuration is incomplete. Please set your EmailJS Public Key in components/ContactForm.tsx, or contact us directly at 9445450305.",
-      });
-      setLoading(false);
-      return;
+    if (FORM_SUBMIT_URL.includes("YOUR_FORM_ID") || FORM_SUBMIT_URL.includes("xyzyqojw")) {
+      console.warn("Form Submission: Using placeholder endpoint. Formspree submissions will fail until configured.");
     }
 
     try {
-      await emailjs.sendForm(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        formRef.current!,
-        { publicKey: EMAILJS_PUBLIC_KEY }
-      );
-      setSubmitted(true);
-    } catch (error: any) {
-      console.error("EmailJS sending error details:", error);
-      if (error && typeof error === "object") {
-        console.error("Status:", error.status);
-        console.error("Text:", error.text);
+      const response = await fetch(FORM_SUBMIT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        throw new Error("Form submission returned a non-ok status code.");
       }
+    } catch (error) {
+      console.error("Form submission error details:", error);
       setErrors({
         submit: isTa
-          ? "மின்னஞ்சலை அனுப்ப முடியவில்லை. முகவரி அல்லது இணைய இணைப்பைச் சரிபார்க்கவும், அல்லது எங்களை அழைக்கவும்: 9445450305"
-          : "Failed to send message. Please verify your EmailJS keys in components/ContactForm.tsx or reach us directly at 9445450305.",
+          ? "மின்னஞ்சலை அனுப்ப முடியவில்லை. தயவுசெய்து நேரடியாக அழைக்கவும்: 9445450305"
+          : "Failed to send message. Please try again later, or contact us directly at 9445450305.",
       });
     } finally {
       setLoading(false);
@@ -117,7 +112,7 @@ export default function ContactForm() {
   );
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
       {field("name", isTa ? "முழு பெயர் *" : "Full Name *")}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {field("email", isTa ? "மின்னஞ்சல் *" : "Email Address *", "email")}
