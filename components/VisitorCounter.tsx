@@ -11,7 +11,7 @@ export default function VisitorCounter() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const baseCount = 14320;
+    const baseCount = 8;
     const storageKey = "finura_visitor_count_cache";
 
     const fetchRealCount = async () => {
