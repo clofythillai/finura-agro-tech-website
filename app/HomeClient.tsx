@@ -235,7 +235,7 @@ export default function HomeClient() {
       </section>
 
       {/* ── MARQUEE ─────────────────────────────────────────── */}
-      <ScrollVelocityMarquee baseVelocity={2} children={items} dark={true} />
+      <ScrollVelocityMarquee baseVelocity={0.8} children={items} dark={true} />
 
       {/* ── COMPANY PROFILE ─────────────────────────────────── */}
       <section className="bg-brand-dark py-20 px-4 sm:px-6">
@@ -434,7 +434,7 @@ export default function HomeClient() {
       </section>
 
       {/* ── MARQUEE (light) ───────────────────────────────── */}
-      <ScrollVelocityMarquee baseVelocity={-2} children={items} dark={false} />
+      <ScrollVelocityMarquee baseVelocity={-0.8} children={items} dark={false} />
 
       {/* ── TESTIMONIALS ──────────────────────────────────── */}
       <section className="bg-brand-dark py-20 px-4 sm:px-6">

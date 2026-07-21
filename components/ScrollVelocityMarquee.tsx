@@ -32,8 +32,8 @@ export default function ScrollVelocityMarquee({
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
   const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
-  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
-    clamp: false,
+  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 1.2], {
+    clamp: true,
   });
 
   const directionFactor = useRef<number>(1);
