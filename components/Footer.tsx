@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLang } from "@/context/LangContext";
+import VisitorCounter from "./VisitorCounter";
 
 const footerNav = [
   { href: "/", labelEn: "Home", labelTa: "முகப்பு" },
@@ -180,12 +181,13 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t-3 border-brand-gray">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="font-body text-xs text-gray-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="font-body text-xs text-gray-500 text-center md:text-left">
             {isTA
               ? "© 2024 பினுரா அக்ரோ டெக் எல்எல்பி. அனைத்து உரிமைகளும் பாதுகாக்கப்படுகின்றன."
               : "© 2024 Finura Agro Tech LLP. All rights reserved. LLPIN: AAY-4389"}
           </p>
+          <VisitorCounter />
           <p className="font-body text-xs text-gray-600">
             {isTA ? "Tamil version available ✓" : "தமிழ் பதிப்பு கிடைக்கும் ✓"}
           </p>
