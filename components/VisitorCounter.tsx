@@ -11,16 +11,16 @@ export default function VisitorCounter() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const baseCount = 1;
+    const baseCount = 14320;
     const storageKey = "finura_visitor_count_cache";
-    const incrementedKey = "finura_visitor_incremented";
 
     const fetchRealCount = async () => {
       try {
-        // Free and reliable counter API (namespace: finura-agro-tech-llp, key: visitors)
-        const res = await fetch("https://api.counterapi.dev/v1/finura-agro-tech-llp/visitors/up");
+        // Using Abacus, a fast, anonymous, open-source counting API
+        const res = await fetch("https://abacus.jasoncameron.dev/hit/finura-agro-tech-llp/visitors");
         if (res.ok) {
           const data = await res.json();
+          // Abacus returns structure: { value: number }
           if (data && typeof data.value === "number") {
             const finalCount = baseCount + data.value;
             localStorage.setItem(storageKey, finalCount.toString());
@@ -28,18 +28,14 @@ export default function VisitorCounter() {
             return;
           }
         }
-        throw new Error("Counter API returned non-ok status");
+        throw new Error("Abacus API returned non-ok status");
       } catch (e) {
-        // Fallback to local storage counter simulation
+        // Fallback to local storage counter simulation (increments on every reload for immediate feedback)
         const cached = localStorage.getItem(storageKey);
         let currentCount = cached ? parseInt(cached, 10) : baseCount;
 
-        const hasIncremented = sessionStorage.getItem(incrementedKey);
-        if (!hasIncremented) {
-          currentCount += 1;
-          localStorage.setItem(storageKey, currentCount.toString());
-          sessionStorage.setItem(incrementedKey, "true");
-        }
+        currentCount += 1;
+        localStorage.setItem(storageKey, currentCount.toString());
         setCount(currentCount);
       }
     };
